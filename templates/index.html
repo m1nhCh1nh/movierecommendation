@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#111114">
+    <title>CineSuggest — Phim hợp gu bạn</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/styles.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="CineSuggest trang chủ">
+        <span class="brand-mark">C</span><span>cine<span class="brand-light">suggest</span></span>
+      </a>
+      <nav class="nav-links" aria-label="Điều hướng">
+        <a href="#popular">Khám phá</a>
+        <a href="#chat">Trợ lý phim</a>
+      </nav>
+      <div class="account-area">
+        <span id="account-label" class="account-label">Khách</span>
+        <button id="login-open" class="button button-quiet">Đăng nhập</button>
+        <button id="register-open" class="button button-primary">Tạo tài khoản</button>
+        <button id="logout-button" class="button button-quiet hidden">Đăng xuất</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <div class="eyebrow"><span class="eyebrow-dot"></span> MỘT BỘ PHIM, ĐÚNG TÂM TRẠNG</div>
+          <h1>Tối nay,<br>mình xem <span>gì nhỉ?</span></h1>
+          <p>Khám phá những bộ phim được yêu thích, hoặc để CineSuggest tìm ra lựa chọn hợp với gu của bạn.</p>
+          <a class="button button-primary hero-cta" href="#popular">Tìm phim cho tôi <span aria-hidden="true">↗</span></a>
+          <div class="hero-note"><span class="sparkle">✳</span> Gợi ý từ cộng đồng MovieLens</div>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="taste-orbit"><span>✳</span></div>
+          <div class="taste-note"><span class="eyebrow">CINE · HYBRID GNN</span><b>Mỗi người<br>một gu phim.</b><small>Gợi ý từ sở thích của bạn</small></div>
+          <div class="art-orbit orbit-one"></div>
+          <div class="art-orbit orbit-two"></div>
+        </div>
+        <div class="hero-bottom"><span>01 — BỘ SƯU TẬP CỦA BẠN</span><span>CUỘN ĐỂ KHÁM PHÁ ↓</span></div>
+      </section>
+
+      <section id="popular" class="content-section">
+        <div class="section-heading">
+          <div><div class="eyebrow">ĐƯỢC KHÁN GIẢ YÊU THÍCH</div><h2>Phim nổi bật</h2></div>
+          <label class="filter-label">Thể loại
+            <select id="genre-filter" aria-label="Lọc phim theo thể loại">
+              <option value="">Tất cả thể loại</option>
+            </select>
+          </label>
+        </div>
+        <div id="popular-movies" class="movie-grid" aria-live="polite"></div>
+        <div id="popular-pagination" class="pagination"></div>
+      </section>
+
+      <section id="personalized" class="content-section personalized-section hidden">
+        <div class="section-heading">
+          <div><div class="eyebrow">DÀNH RIÊNG CHO BẠN · HYBRID GNN</div><h2>Hợp với gu của bạn</h2></div>
+          <button id="profile-open" class="button button-outline">Chỉnh sở thích <span aria-hidden="true">↗</span></button>
+        </div>
+        <p id="personalized-note" class="section-caption"></p>
+        <div id="recommendation-list" class="movie-grid"></div>
+        <div id="recommendation-pagination" class="pagination"></div>
+      </section>
+
+      <section id="chat" class="chat-section">
+        <div class="chat-intro">
+          <div class="eyebrow"><span class="eyebrow-dot"></span> HỎI CINE · TRỢ LÝ PHIM AI</div>
+          <h2>Mình tìm phim<br><span>cùng bạn nhé.</span></h2>
+          <p>Chỉ cần nói bạn muốn xem gì. Cine chỉ gợi ý phim có trong danh mục — không bịa tên phim, không lạc đề.</p>
+          <div class="chat-powered"><span>✳</span> Ollama · Qwen 2.5 · chạy trên máy của bạn</div>
+        </div>
+        <div class="chat-window">
+          <div class="chat-window-head"><div class="bot-avatar">✳</div><div><b>Cine</b><small><span class="online-dot"></span> Sẵn sàng tìm phim</small></div><span class="chat-head-label">CHỈ VỀ PHIM</span></div>
+          <div id="chat-messages" class="chat-messages" aria-live="polite">
+            <div class="chat-bubble bot-bubble">Chào bạn! Tối nay bạn muốn xem thể loại phim nào? ✨</div>
+          </div>
+          <form id="chat-form" class="chat-composer">
+            <label class="sr-only" for="chat-input">Nhập câu hỏi về phim</label>
+            <input id="chat-input" maxlength="500" placeholder="Ví dụ: Gợi ý phim phiêu lưu thật cuốn..." autocomplete="off">
+            <button type="submit" class="send-button" aria-label="Gửi tin nhắn">↑</button>
+          </form>
+          <div class="chat-disclaimer">Cine chỉ hỗ trợ tìm và gợi ý phim trong danh mục.</div>
+        </div>
+      </section>
+
+      <section id="admin-panel" class="content-section admin-section hidden">
+        <div class="section-heading">
+          <div><div class="eyebrow">QUẢN TRỊ</div><h2>Quản lý CineSuggest</h2></div>
+          <span class="admin-badge">ADMIN</span>
+        </div>
+        <div class="admin-tabs"><button class="admin-tab active" data-admin-tab="users">Người dùng</button><button class="admin-tab" data-admin-tab="movies">Phim</button></div>
+        <div id="admin-users" class="admin-table-wrap"></div>
+        <div id="admin-users-pagination" class="pagination"></div>
+        <div id="admin-movies" class="admin-table-wrap hidden"></div>
+        <div id="admin-movies-pagination" class="pagination hidden"></div>
+      </section>
+    </main>
+
+    <footer><a class="brand footer-brand" href="/"><span class="brand-mark">C</span><span>cine<span class="brand-light">suggest</span></span></a><span>Gợi ý tốt bắt đầu từ một bộ phim hay.</span><span>HYBRID GNN × LOCAL AI</span></footer>
+
+    <dialog id="auth-dialog" class="modal">
+      <form method="dialog" class="modal-close-form"><button class="modal-close" aria-label="Đóng">×</button></form>
+      <div class="eyebrow">CHÀO MỪNG ĐẾN CINE</div>
+      <h2 id="auth-title">Đăng nhập</h2>
+      <p id="auth-subtitle" class="modal-subtitle">Đăng nhập để khám phá phim hợp gu.</p>
+      <form id="auth-form" class="form-stack">
+        <label id="name-field" class="hidden">Tên hiển thị<input name="display_name" maxlength="80" autocomplete="name"></label>
+        <label>Email<input name="email" type="email" maxlength="254" required autocomplete="email"></label>
+        <label>Mật khẩu<input name="password" type="password" minlength="10" maxlength="128" required autocomplete="current-password"></label>
+        <button id="auth-submit" class="button button-primary button-wide">Đăng nhập</button>
+        <p id="auth-error" class="form-error" role="alert"></p>
+      </form>
+      <button id="auth-switch" class="text-button">Chưa có tài khoản? Tạo tài khoản</button>
+    </dialog>
+
+    <dialog id="profile-dialog" class="modal profile-modal">
+      <form method="dialog" class="modal-close-form"><button class="modal-close" aria-label="Đóng">×</button></form>
+      <div class="eyebrow">CÀI ĐẶT HỒ SƠ</div>
+      <h2>Gu phim của bạn</h2>
+      <p class="modal-subtitle">Chọn thể loại hoặc phim bạn yêu thích. Hybrid GNN sẽ xếp hạng phim có embedding tương tự.</p>
+      <form id="profile-form" class="form-stack">
+        <label>Tên hiển thị<input name="display_name" maxlength="80" required></label>
+        <fieldset><legend>Thể loại yêu thích <span>(chọn tối đa 12)</span></legend><div id="genre-choices" class="choice-list"></div></fieldset>
+        <label>Tìm phim yêu thích <input id="favorite-search" placeholder="Nhập tên phim..." autocomplete="off"></label>
+        <div id="movie-choices" class="movie-choices"></div>
+        <div id="profile-movie-pagination" class="pagination compact-pagination"></div>
+        <button class="button button-primary button-wide">Lưu sở thích</button>
+        <p id="profile-error" class="form-error" role="alert"></p>
+      </form>
+    </dialog>
+
+    <dialog id="movie-dialog" class="modal movie-dialog">
+      <form method="dialog" class="modal-close-form"><button class="modal-close" aria-label="Đóng">×</button></form>
+      <div class="eyebrow">CHI TIẾT PHIM</div>
+      <h2 id="movie-detail-title"></h2>
+      <p id="movie-detail-genres" class="movie-detail-genres"></p>
+      <p id="movie-detail-overview" class="movie-detail-overview"></p>
+      <div id="movie-detail-ratings" class="movie-detail-ratings"></div>
+    </dialog>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="/static/app.js" defer></script>
+  </body>
+</html>

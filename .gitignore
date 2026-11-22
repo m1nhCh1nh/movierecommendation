@@ -1,0 +1,23 @@
+# Environment
+.env
+.venv/
+venv/
+
+# Dataset
+data/*.zip
+data/the-movies-dataset/
+data/*.db
+
+# Generated files
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Model files
+*.pth
+*.pt
+*.pkl
+*.joblib
+*.h5
+*.keras
+!model/web_artifacts_tmdb/hybrid_gnn_llm_tmdb.pt
